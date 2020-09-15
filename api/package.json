@@ -1,0 +1,30 @@
+{
+  "name": "@woz-wepublish/api",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dist/",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "build": "run-s build:*",
+    "build:typescript": "tsc -b ./src/tsconfig.json",
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:server": "nodemon -r dotenv/config --inspect=0.0.0.0:9240 ./dist/index.js",
+    "watch:typescript": "tsc -b ./src/tsconfig.json --watch",
+    "clean": "shx rm -rf ./dist",
+    "prepare": "run-s clean build"
+  },
+  "dependencies": {
+    "@wepublish/api": "^0.8.4",
+    "@wepublish/api-db-mongodb": "^0.8.4",
+    "@wepublish/api-media-karma": "^0.8.4"
+  },
+  "devDependencies": {
+    "@types/node": "^12.6.8",
+    "dotenv": "^8.2.0",
+    "nodemon": "^1.19.1",
+    "npm-run-all": "^4.1.5",
+    "shx": "^0.3.2",
+    "typescript": "^3.8.3"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "@woz-wepublish/repo",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "^12.0.0",
+    "yarn": "^1.17.0"
+  },
+  "scripts": {
+    "dev": "run-p start:docker watch",
+    "clean": "run-p --print-label clean:**",
+    "build": "run-s --print-label build:api build:media",
+    "watch": "run-p --print-label watch:api watch:media ",
+    "start": "run-p --print-label start:api start:media",
+    "deploy-gke": "node ./config/create-gke-manifest.js",
+    "start:docker": "docker-compose up",
+    "clean:api": "yarn workspace @woz-wepublish/api clean",
+    "build:api": "yarn workspace @woz-wepublish/api build",
+    "watch:api": "yarn workspace @woz-wepublish/api watch",
+    "start:api": "yarn workspace @woz-wepublish/api start",
+    "clean:media": "yarn workspace @woz-wepublish/media clean",
+    "build:media": "yarn workspace @woz-wepublish/media build",
+    "watch:media": "yarn workspace @woz-wepublish/media watch",
+    "start:media": "yarn workspace @woz-wepublish/media start",
+    "prettier": "prettier --write '{packages,services}/**/*.{js,ts,tsx,json}'",
+    "prettier-check": "prettier --check '{packages,services}/**/*.{js,ts,tsx,json}'"
+  },
+  "workspaces": [
+    "api",
+    "media"
+  ],
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "husky": "^3.0.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^1.11.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged --pattern \"src/**/*.{js,ts,tsx,json}\""
+    }
+  }
+}
