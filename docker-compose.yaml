@@ -1,0 +1,34 @@
+version: '3'
+services:
+
+  api:
+    container_name: api
+    build:
+      context: ./api
+      dockerfile: dockerfile
+    depends_on:
+      - media
+    ports:
+      - "4000:4000"
+    environment:
+      - HOST_URL=http://localhost:4000
+      - MONGO_URL=mongodb://mongo:27017/woz-wepublish
+      - MEDIA_SERVER_URL=http://media:3004
+      - MEDIA_SERVER_TOKEN=UnglaublichGheim
+
+  media:
+    container_name: media
+    build:
+      context: ./media
+      dockerfile: dockerfile
+    ports:
+      - "3004:3004"
+    environment:
+      - TOKEN=UnglaublichGheim
+      - NUM_CLUSTERS=1
+      - STORAGE_PATH=./media
+
+  mongo:
+    image: mongo:4.2.3-bionic
+    expose:
+      - "27017"
