@@ -50,7 +50,7 @@ async function applyMediaServer() {
   const appPort = 3004
 
   const deployment = {
-    apiVersion: 'extensions/v1beta1',
+    apiVersion: 'apps/v1',
     kind: 'Deployment',
     metadata: {
       name: appName,
@@ -217,7 +217,7 @@ async function applyApiServer() {
   const appPort = 3005
 
   const deployment = {
-    apiVersion: 'extensions/v1beta1',
+    apiVersion: 'apps/v1',
     kind: 'Deployment',
     metadata: {
       name: appName,
