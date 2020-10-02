@@ -58,7 +58,7 @@ async function asyncMain() {
             const adminUserRole = await adapter.userRole.getUserRole('Admin')
             const adminUserRoleId = adminUserRole ? adminUserRole.id : 'fake'
 
-            adapter.user.createUser({
+            await adapter.user.createUser({
                 input: {
                     email: 'dev@wepublish.ch',
                     name: 'Dev User',

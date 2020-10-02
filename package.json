@@ -19,6 +19,7 @@
     "build:api": "yarn workspace @woz-wepublish/api build",
     "watch:api": "yarn workspace @woz-wepublish/api watch",
     "start:api": "yarn workspace @woz-wepublish/api start",
+    "fetch:api": "yarn workspace @woz-wepublish/api fetch",
     "clean:media": "yarn workspace @woz-wepublish/media clean",
     "build:media": "yarn workspace @woz-wepublish/media build",
     "watch:media": "yarn workspace @woz-wepublish/media watch",

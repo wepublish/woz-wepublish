@@ -378,27 +378,27 @@
   dependencies:
     "@types/node" "*"
 
-"@wepublish/api-db-mongodb@^0.8.4":
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/@wepublish/api-db-mongodb/-/api-db-mongodb-0.8.4.tgz#ed36de6618a158f8d0f78e6bfe5535435b2c341b"
-  integrity sha512-Xm6U/rXAhVrXqhd54y47WibDD++ER6T6Mu25QsY1we5exh2neaoy9exg8vLHdDgUxD6y5mNFgZ08LmlcIe21ng==
+"@wepublish/api-db-mongodb@^0.8.5":
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/@wepublish/api-db-mongodb/-/api-db-mongodb-0.8.5.tgz#692ed6c309168bacfcdf1a4f29b48090d8cbf875"
+  integrity sha512-klyU4NF0IuOVL6kIQamhrI/VSfbCuUpcdTFyZLIsx8jINAOejVOPEoqzqAU+/Zag2GNy3WMfO45jDf0xpMyE6A==
   dependencies:
-    bcrypt "^4.0.1"
+    bcrypt "^5.0.0"
     mongodb "^3.5.4"
     nanoid "^2.1.11"
 
-"@wepublish/api-media-karma@^0.8.4":
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/@wepublish/api-media-karma/-/api-media-karma-0.8.4.tgz#a5034cb75c0980b8292bd5850a3a8e9670111b2c"
-  integrity sha512-yARGqijl2W8Av+4hL4+dH5CZYDZ6JIcPT7kJGnpP4o+lB4mSKbZqZEVvV24YBHGMsVaAxb/pyGeKtPHgLfvXeQ==
+"@wepublish/api-media-karma@^0.8.5":
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/@wepublish/api-media-karma/-/api-media-karma-0.8.5.tgz#27bdf4c9eda1f63700c970acf7256787fb0ba93b"
+  integrity sha512-oSgbOHZNoSI5+5vhn6u+oaZgNeWMIMg8jAldEte7BKujf/J1TTX0qiHHtBZopEo5lF/shcLh2xBHpn0i0JJHHg==
   dependencies:
     form-data "^3.0.0"
     node-fetch "^2.6.0"
 
-"@wepublish/api@^0.8.4":
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/@wepublish/api/-/api-0.8.4.tgz#b514aa63f30b2ee47bd86c15e4c7eefbef2d9040"
-  integrity sha512-cWe2TNqb1bmp8JUrHQ3B+qYL+TQXCjfFaE1nDGxRhN7J2Ccjdt4ig/mmIOsWRuHdWaghavZXeY+pujXuGQ5kgA==
+"@wepublish/api@^0.8.5":
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/@wepublish/api/-/api-0.8.5.tgz#1b5a9d202eb17f157836360b348211e948adff9f"
+  integrity sha512-GzcU0xU6R6LveXbRBiBSoS4oE5z3ibBmNENnUMJlsg0DS4vOHEXcchfsn5Hhclh0ix9xp8venes0XyUNrm7D7A==
   dependencies:
     "@karma.run/utility" "^0.1.0"
     "@types/qs" "^6.9.1"
@@ -825,6 +825,13 @@ avvio@^6.5.0:
     debug "^4.0.0"
     fastq "^1.6.0"
 
+axios@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
+  integrity sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
+  dependencies:
+    follow-redirects "^1.10.0"
+
 backo2@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
@@ -858,13 +865,13 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
-bcrypt@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/bcrypt/-/bcrypt-4.0.1.tgz#06e21e749a061020e4ff1283c1faa93187ac57fe"
-  integrity sha512-hSIZHkUxIDS5zA2o00Kf2O5RfVbQ888n54xQoF/eIaquU4uaLxK8vhhBdktd0B3n2MjkcAWzv4mnhogykBKOUQ==
+bcrypt@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/bcrypt/-/bcrypt-5.0.0.tgz#051407c7cd5ffbfb773d541ca3760ea0754e37e2"
+  integrity sha512-jB0yCBl4W/kVHM2whjfyqnxTmOHkCX4kHEa5nYKSoGeYe8YrjTYTc87/6bwt1g8cmV0QrbhKriETg9jWtcREhg==
   dependencies:
-    node-addon-api "^2.0.0"
-    node-pre-gyp "0.14.0"
+    node-addon-api "^3.0.0"
+    node-pre-gyp "0.15.0"
 
 binary-extensions@^1.0.0:
   version "1.13.1"
@@ -1877,6 +1884,11 @@ flatstr@^1.0.12:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/flatstr/-/flatstr-1.0.12.tgz#c2ba6a08173edbb6c9640e3055b95e287ceb5931"
   integrity sha512-4zPxDyhCyiN2wIAtSLI6gc82/EjqZc1onI4Mz/l0pWrAlsSfYH/2ZIcU+e3oA2wDwbzIWNKwa23F8rh6+DRWkw==
+
+follow-redirects@^1.10.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
+  integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -2988,7 +3000,7 @@ mkdirp-classic@^0.5.2:
   resolved "https://registry.yarnpkg.com/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz#fa10c9115cc6d8865be221ba47ee9bed78601113"
   integrity sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
 
-mkdirp@^0.5.0, mkdirp@^0.5.1:
+mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@^0.5.3:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.5.tgz#d91cefd62d1436ca0f41620e251288d420099def"
   integrity sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
@@ -3087,7 +3099,7 @@ napi-build-utils@^1.0.1:
   resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.2.tgz#b1fddc0b2c46e380a0b7a76f984dd47c41a13806"
   integrity sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==
 
-needle@^2.2.1:
+needle@^2.5.0:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/needle/-/needle-2.5.2.tgz#cf1a8fce382b5a280108bba90a14993c00e4010a"
   integrity sha512-LbRIwS9BfkPvNwNHlsA41Q29kL2L/6VaOJ0qisM5lLWsTV3nP15abO5ITL6L81zqFhzjRKDAYjpcBcwM0AVvLQ==
@@ -3113,24 +3125,24 @@ node-abi@^2.7.0:
   dependencies:
     semver "^5.4.1"
 
-node-addon-api@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-2.0.2.tgz#432cfa82962ce494b132e9d72a15b29f71ff5d32"
-  integrity sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==
+node-addon-api@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-3.0.2.tgz#04bc7b83fd845ba785bb6eae25bc857e1ef75681"
+  integrity sha512-+D4s2HCnxPd5PjjI0STKwncjXTUKKqm74MDMz9OPXavjsGmjkvwgLtA5yoxJUdmpj52+2u+RrXgPipahKczMKg==
 
 node-fetch@^2.1.2, node-fetch@^2.2.0, node-fetch@^2.6.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
-node-pre-gyp@0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
-  integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
+node-pre-gyp@0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.15.0.tgz#c2fc383276b74c7ffa842925241553e8b40f1087"
+  integrity sha512-7QcZa8/fpaU/BKenjcaeFF9hLz2+7S9AqyXFhlH/rilsQ/hPZKK32RtR5EQHJElgu+q5RfbJ34KriI79UWaorA==
   dependencies:
     detect-libc "^1.0.2"
-    mkdirp "^0.5.1"
-    needle "^2.2.1"
+    mkdirp "^0.5.3"
+    needle "^2.5.0"
     nopt "^4.0.1"
     npm-packlist "^1.1.6"
     npmlog "^4.0.2"

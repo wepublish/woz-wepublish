@@ -36,10 +36,10 @@ if (cluster.isMaster) {
     storageBackend: new LocalStorageBackend(storagePath),
     imageBackend: new SharpImageBackend(),
     maxUploadSize: 1024 * 1024 * 10, // 10
-    logger: false,
+    logger: true,
     port,
     address,
-    debug,
+    debug: true,
     token
   })
 }
