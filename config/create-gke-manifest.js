@@ -92,6 +92,19 @@ async function applyMediaServer() {
                 {
                   name: 'STORAGE_PATH',
                   value: '/home/node/app/.media'
+                },
+                {
+                  name: 'NUM_CLUSTERS',
+                  value: '1'
+                },
+                {
+                  name: 'TOKEN',
+                  valueFrom: {
+                    secretKeyRef: {
+                      name: 'wepublish-woz-secrets',
+                      key: 'media_server_token'
+                    }
+                  }
                 }
               ],
               ports: [
@@ -263,6 +276,15 @@ async function applyApiServer() {
                 {
                   name: 'MEDIA_SERVER_URL',
                   value: `https://${domainMedia}`
+                },
+                {
+                  name: 'MEDIA_SERVER_TOKEN',
+                  valueFrom: {
+                    secretKeyRef: {
+                      name: 'wepublish-woz-secrets',
+                      key: 'media_server_token'
+                    }
+                  }
                 },
                 {
                   name: 'PORT',
