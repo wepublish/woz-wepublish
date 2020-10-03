@@ -454,7 +454,7 @@ async function applyMongo() {
               name: 'mongo-volume',
               gcePersistentDisk: {
                 fsType: 'ext4',
-                pdName: 'wepublish-mongo-production'
+                pdName: 'wepublish-woz-mongo-production'
               }
             }
           ]
