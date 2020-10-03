@@ -10,7 +10,7 @@ const GOOGLE_REGISTRY_HOST_NAME = 'eu.gcr.io'
 const NAMESPACE = 'wepublish-woz'
 const ENVIRONMENT_NAME = 'production'
 
-const domain = 'woz.wepublish.media'
+const domain = 'woz.wepublish.ch'
 
 const domainMedia = `media.${domain}`
 const domainAPI = `api.${domain}`
@@ -296,7 +296,7 @@ async function applyApiServer() {
                 },
                 {
                   name: 'HOST_URL',
-                  value: 'https://api.woz.wepublish.media'
+                  value: 'https://api.woz.wepublish.ch'
                 },
                 {
                   name: 'MONGO_URL',
