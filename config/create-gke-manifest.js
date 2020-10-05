@@ -14,8 +14,7 @@ const domain = 'woz.wepublish.media'
 
 const domainMedia = `media.${domain}`
 const domainAPI = `api.${domain}`
-
-const image = `${GOOGLE_REGISTRY_HOST_NAME}/${PROJECT_ID}/${GITHUB_REPOSITORY}/main:${GITHUB_SHA}`
+const domainEditor = `editor.${domain}`
 
 main().catch(e => {
   process.stderr.write(e.toString())
@@ -26,6 +25,7 @@ async function main() {
   await applyNamespace()
   await applyMediaServer()
   await applyApiServer()
+  await applyEditor()
   await applyMongo()
 }
 
@@ -401,7 +401,158 @@ async function applyApiServer() {
   await applyConfig(`ingress-${app}`, ingress)
 }
 
+async function applyEditor() {
+  const image = `${GOOGLE_REGISTRY_HOST_NAME}/${PROJECT_ID}/${GITHUB_REPOSITORY}/editor:${GITHUB_SHA}`
+  const app = 'editor'
+  const appName = `${app}-${ENVIRONMENT_NAME}`
+  const appPort = 3006
 
+  const deployment = {
+    apiVersion: 'extensions/v1beta1',
+    kind: 'Deployment',
+    metadata: {
+      name: appName,
+      namespace: NAMESPACE,
+      labels: {
+        app: app,
+        release: ENVIRONMENT_NAME
+      }
+    },
+    spec: {
+      replicas: 1,
+      selector: {
+        matchLabels: {
+          app: app,
+          release: ENVIRONMENT_NAME
+        }
+      },
+      strategy: {
+        rollingUpdate: {
+          maxSurge: 1,
+          maxUnavailable: 0
+        },
+        type: 'RollingUpdate'
+      },
+      template: {
+        metadata: {
+          name: appName,
+          labels: {
+            app: app,
+            release: ENVIRONMENT_NAME
+          }
+        },
+        spec: {
+          containers: [
+            {
+              name: appName,
+              image: image,
+              env: [
+                {
+                  name: 'API_URL',
+                  value: `https://${domainAPI}`
+                },
+                {
+                  name: 'PORT',
+                  value: '3006'
+                }
+              ],
+              ports: [
+                {
+                  containerPort: appPort,
+                  protocol: 'TCP'
+                }
+              ],
+              imagePullPolicy: 'IfNotPresent',
+              resources: {
+                requests: {
+                  cpu: '200m',
+                  memory: '128Mi'
+                }
+              },
+              terminationMessagePath: '/dev/termination-log',
+              terminationMessagePolicy: 'File'
+            }
+          ],
+          dnsPolicy: 'ClusterFirst',
+          restartPolicy: 'Always',
+          schedulerName: 'default-scheduler',
+          terminationGracePeriodSeconds: 30
+        }
+      }
+    }
+  }
+  await applyConfig(`deployment-${app}`, deployment)
+
+  const service = {
+    apiVersion: 'v1',
+    kind: 'Service',
+    metadata: {
+      name: appName,
+      namespace: NAMESPACE
+    },
+    spec: {
+      ports: [
+        {
+          name: 'http',
+          port: appPort,
+          protocol: 'TCP',
+          targetPort: appPort
+        }
+      ],
+      selector: {
+        app: app,
+        release: ENVIRONMENT_NAME
+      },
+      type: 'ClusterIP'
+    }
+  }
+  await applyConfig(`service-${app}`, service)
+
+  let ingress = {
+    apiVersion: 'extensions/v1beta1',
+    kind: 'Ingress',
+    metadata: {
+      name: appName,
+      namespace: NAMESPACE,
+      labels: {
+        app: app,
+        release: ENVIRONMENT_NAME
+      },
+      annotations: {
+        'kubernetes.io/ingress.class': 'nginx',
+        'nginx.ingress.kubernetes.io/ssl-redirect': 'true',
+        'nginx.ingress.kubernetes.io/proxy-body-size': '20m',
+        'nginx.ingress.kubernetes.io/proxy-read-timeout': '30',
+        'cert-manager.io/cluster-issuer': 'letsencrypt-production'
+      }
+    },
+    spec: {
+      rules: [
+        {
+          host: domainEditor,
+          http: {
+            paths: [
+              {
+                backend: {
+                  serviceName: appName,
+                  servicePort: appPort
+                },
+                path: '/'
+              }
+            ]
+          }
+        }
+      ],
+      tls: [
+        {
+          hosts: [domainEditor],
+          secretName: `${appName}-tls-new`
+        }
+      ]
+    }
+  }
+  await applyConfig(`ingress-${app}`, ingress)
+}
 
 async function applyMongo() {
   const app = 'mongo'

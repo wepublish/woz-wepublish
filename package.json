@@ -11,7 +11,7 @@
     "dev": "run-p start:docker watch",
     "clean": "run-p --print-label clean:**",
     "build": "run-s --print-label build:api build:media",
-    "watch": "run-p --print-label watch:api watch:media ",
+    "watch": "run-p --print-label watch:api watch:media watch:editor",
     "start": "run-p --print-label start:api start:media",
     "deploy-gke": "node ./config/create-gke-manifest.js",
     "start:docker": "docker-compose up",
@@ -24,12 +24,15 @@
     "build:media": "yarn workspace @woz-wepublish/media build",
     "watch:media": "yarn workspace @woz-wepublish/media watch",
     "start:media": "yarn workspace @woz-wepublish/media start",
+    "start:editor": "yarn workspace @woz-wepublish/editor start",
+    "watch:editor": "yarn workspace @woz-wepublish/editor watch",
     "prettier": "prettier --write '{packages,services}/**/*.{js,ts,tsx,json}'",
     "prettier-check": "prettier --check '{packages,services}/**/*.{js,ts,tsx,json}'"
   },
   "workspaces": [
     "api",
-    "media"
+    "media",
+    "editor"
   ],
   "devDependencies": {
     "cross-env": "^6.0.3",

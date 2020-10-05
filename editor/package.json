@@ -1,0 +1,15 @@
+
+{
+  "name": "@woz-wepublish/editor",
+  "private": true,
+  "version": "0.6.0",
+  "license": "UNLICENSED",
+  "scripts": {
+    "watch": "node -r dotenv/config ./node_modules/.bin/wepublish-editor",
+    "start": "wepublish-editor"
+  },
+  "dependencies": {
+    "@wepublish/editor": "^0.8.5",
+    "webpack": "^4.41.2"
+  }
+}

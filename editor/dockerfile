@@ -1,0 +1,16 @@
+ FROM node:12.14.0-alpine
+
+USER node
+RUN mkdir -p /home/node/app
+WORKDIR /home/node/app
+
+COPY --chown=node:node package.json ./
+
+RUN yarn install
+
+ENV NODE_ENV=production
+ENV ADDRESS=0.0.0.0
+ENV PORT=3006
+
+EXPOSE 3006
+CMD ["yarn", "start"]
