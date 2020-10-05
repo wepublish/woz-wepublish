@@ -215,7 +215,7 @@ async function applyMediaServer() {
       tls: [
         {
           hosts: [domainMedia],
-          secretName: `${appName}-tls`
+          secretName: `${appName}-tls-new`
         }
       ]
     }
@@ -393,7 +393,7 @@ async function applyApiServer() {
       tls: [
         {
           hosts: [domainAPI],
-          secretName: `${appName}-tls`
+          secretName: `${appName}-tls-new`
         }
       ]
     }
