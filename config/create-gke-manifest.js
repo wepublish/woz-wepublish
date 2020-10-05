@@ -408,7 +408,7 @@ async function applyEditor() {
   const appPort = 3006
 
   const deployment = {
-    apiVersion: 'extensions/v1beta1',
+    apiVersion: 'apps/v1',
     kind: 'Deployment',
     metadata: {
       name: appName,
