@@ -399,6 +399,86 @@ async function applyApiServer() {
     }
   }
   await applyConfig(`ingress-${app}`, ingress)
+
+  let cronJob = {
+    apiVersion: 'batch/v1beta1',
+    kind: 'CronJob',
+    metadata: {
+      name: `${appName}-fetch`,
+      namespace: NAMESPACE,
+      labels: {
+        app: `${app}-cron`,
+        release: ENVIRONMENT_NAME
+      }
+    },
+    spec: {
+      schedule: '*/20 * * * *',
+      jobTemplate: {
+        spec: {
+          template: {
+            metadata: {
+              name: `${appName}-fetch`,
+              labels: {
+                app: `${app}-cron`,
+                release: ENVIRONMENT_NAME
+              }
+            },
+            spec: {
+              containers: [
+                {
+                  name: `${appName}-fetch`,
+                  image: image,
+                  args: [ "node", "./dist/fetch.js" ],
+                  env: [
+                    {
+                      name: 'NODE_ENV',
+                      value: `production`
+                    },
+                    {
+                      name: 'MEDIA_SERVER_URL',
+                      value: `https://${domainMedia}`
+                    },
+                    {
+                      name: 'MEDIA_SERVER_TOKEN',
+                      valueFrom: {
+                        secretKeyRef: {
+                          name: 'wepublish-woz-secrets',
+                          key: 'media_server_token'
+                        }
+                      }
+                    },
+                    {
+                      name: 'PORT',
+                      value: '3005'
+                    },
+                    {
+                      name: 'HOST_ENV',
+                      value: 'production'
+                    },
+                    {
+                      name: 'HOST_URL',
+                      value: 'https://api.woz.wepublish.media'
+                    },
+                    {
+                      name: 'MONGO_URL',
+                      value: 'mongodb://mongo-production:27017/woz-wepublish'
+                    },
+                    {
+                      name: 'MONGO_LOCALE',
+                      value: 'de'
+                    }
+                  ]
+                }
+              ],
+              restartPolicy: "Never"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  await applyConfig(`cronjob-${app}`, cronJob)
 }
 
 async function applyEditor() {
