@@ -19,12 +19,11 @@ class WozURLAdapter implements URLAdapter {
 
     getPublicPageURL(page: PublicPage): string {
         // TODO: should never be called
-        return `https://demo.wepublish.ch/page/${page.id}/${page.slug}`
+        return `https://woz.ch`
     }
 
     getAuthorURL(author: Author): string {
-        // TODO: fix that
-        return `https://demo.wepublish.ch/author/${author.slug || author.id}`
+        return `https://woz.ch/archiv/"${author.name}"`
     }
 }
 
