@@ -53,6 +53,7 @@ export interface WozArticle {
     blocks: any[]
     imageID: string
     imageRecord: WozImage
+    permalink: string
 }
 
 const asyncFilter = async (arr: [], predicate: any) => {
@@ -202,6 +203,10 @@ async function asyncMain() {
                     key: "wozID",
                     value: wozArticle.id,
                     public: false
+                },{
+                    key: "wozLink",
+                    value: wozArticle.permalink,
+                    public: true
                 }],
                 imageID: wozArticle.imageID
             }

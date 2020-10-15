@@ -14,7 +14,8 @@ import {URL} from 'url'
 
 class WozURLAdapter implements URLAdapter {
     getPublicArticleURL(article: PublicArticle): string {
-        return `https://demo.wepublish.ch/article/${article.id}/${article.slug}`
+        const wozLink = article.properties.find((property => property.key === 'wozLink'))
+        return wozLink?.value || 'https://www.woz.ch'
     }
 
     getPublicPageURL(page: PublicPage): string {
