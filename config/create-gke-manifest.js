@@ -766,11 +766,11 @@ async function applyWebsiteRedirect() {
         'cert-manager.io/cluster-issuer': 'letsencrypt-production'
       }
     },
-    /*spec: {
+    spec: {
       rules: [
         {
-          host: domainAPI,
-          http: {
+          host: domain,
+          /*http: {
             paths: [
               {
                 backend: {
@@ -780,16 +780,16 @@ async function applyWebsiteRedirect() {
                 path: '/'
               }
             ]
-          }
+          }*/
         }
       ],
       tls: [
         {
-          hosts: [domainAPI],
+          hosts: [domain],
           secretName: `${appName}-tls-new`
         }
       ]
-    }*/
+    }
   }
   await applyConfig(`ingress-${app}`, ingress)
 }
