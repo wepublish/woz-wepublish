@@ -747,6 +747,21 @@ async function applyMongo() {
 async function applyWebsiteRedirect() {
   const app = 'website'
   const appName = `${app}-${ENVIRONMENT_NAME}`
+
+  const service = {
+    apiVersion: 'v1',
+    kind: 'Service',
+    metadata: {
+      name: appName,
+      namespace: NAMESPACE
+    },
+    spec: {
+      type: 'ExternalName',
+      externalName: 'woz.ch'
+    }
+  }
+  await applyConfig(`service-${app}`, service)
+
   let ingress = {
     apiVersion: 'extensions/v1beta1',
     kind: 'Ingress',
@@ -762,7 +777,6 @@ async function applyWebsiteRedirect() {
         'nginx.ingress.kubernetes.io/ssl-redirect': 'true',
         'nginx.ingress.kubernetes.io/proxy-body-size': '10m',
         'nginx.ingress.kubernetes.io/proxy-read-timeout': '30',
-        'nginx.ingress.kubernetes.io/permanent-redirect': 'https://www.woz.ch/',
         'cert-manager.io/cluster-issuer': 'letsencrypt-production'
       }
     },
@@ -770,17 +784,17 @@ async function applyWebsiteRedirect() {
       rules: [
         {
           host: domain,
-          /*http: {
+          http: {
             paths: [
               {
                 backend: {
                   serviceName: appName,
-                  servicePort: appPort
+                  servicePort: 80
                 },
                 path: '/'
               }
             ]
-          }*/
+          }
         }
       ],
       tls: [
