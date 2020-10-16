@@ -27,7 +27,7 @@ async function main() {
   await applyApiServer()
   await applyEditor()
   await applyMongo()
-  await applyWebsiteRedirect()
+  await applyWebsite()
 }
 
 async function applyNamespace() {
@@ -744,9 +744,76 @@ async function applyMongo() {
   await applyConfig(`service-${app}`, service)
 }
 
-async function applyWebsiteRedirect() {
+async function applyWebsite() {
   const app = 'website'
   const appName = `${app}-${ENVIRONMENT_NAME}`
+  const image = `${GOOGLE_REGISTRY_HOST_NAME}/${PROJECT_ID}/${GITHUB_REPOSITORY}/website:${GITHUB_SHA}`
+  const appPort = 5000
+
+  const deployment = {
+    apiVersion: 'apps/v1',
+    kind: 'Deployment',
+    metadata: {
+      name: appName,
+      namespace: NAMESPACE,
+      labels: {
+        app: app,
+        release: ENVIRONMENT_NAME
+      }
+    },
+    spec: {
+      replicas: 1,
+      selector: {
+        matchLabels: {
+          app: app,
+          release: ENVIRONMENT_NAME
+        }
+      },
+      strategy: {
+        type: 'Recreate'
+      },
+      template: {
+        metadata: {
+          name: appName,
+          labels: {
+            app: app,
+            release: ENVIRONMENT_NAME
+          }
+        },
+        spec: {
+          containers: [
+            {
+              name: appName,
+              image: image,
+              env: [
+                {
+                  name: 'NODE_ENV',
+                  value: `production`
+                }
+              ],
+              ports: [
+                {
+                  containerPort: appPort,
+                  protocol: 'TCP'
+                }
+              ],
+              imagePullPolicy: 'IfNotPresent',
+              terminationMessagePath: '/dev/termination-log',
+              terminationMessagePolicy: 'File'
+            }
+          ],
+          dnsPolicy: 'ClusterFirst',
+          restartPolicy: 'Always',
+          schedulerName: 'default-scheduler',
+          terminationGracePeriodSeconds: 30,
+          securityContext: {
+            fsGroup: 1000
+          }
+        }
+      }
+    }
+  }
+  await applyConfig(`deployment-${app}`, deployment)
 
   const service = {
     apiVersion: 'v1',
@@ -756,8 +823,19 @@ async function applyWebsiteRedirect() {
       namespace: NAMESPACE
     },
     spec: {
-      type: 'ExternalName',
-      externalName: 'woz.ch'
+      ports: [
+        {
+          name: 'http',
+          port: appPort,
+          protocol: 'TCP',
+          targetPort: appPort
+        }
+      ],
+      selector: {
+        app: app,
+        release: ENVIRONMENT_NAME
+      },
+      type: 'ClusterIP'
     }
   }
   await applyConfig(`service-${app}`, service)
@@ -789,7 +867,7 @@ async function applyWebsiteRedirect() {
               {
                 backend: {
                   serviceName: appName,
-                  servicePort: 80
+                  servicePort: appPort
                 },
                 path: '/'
               }
