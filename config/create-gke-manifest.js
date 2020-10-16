@@ -27,6 +27,7 @@ async function main() {
   await applyApiServer()
   await applyEditor()
   await applyMongo()
+  await applyWebsiteRedirect()
 }
 
 async function applyNamespace() {
@@ -741,6 +742,56 @@ async function applyMongo() {
     }
   }
   await applyConfig(`service-${app}`, service)
+}
+
+async function applyWebsiteRedirect() {
+  const app = 'website'
+  const appName = `${app}-${ENVIRONMENT_NAME}`
+  let ingress = {
+    apiVersion: 'extensions/v1beta1',
+    kind: 'Ingress',
+    metadata: {
+      name: appName,
+      namespace: NAMESPACE,
+      labels: {
+        app: app,
+        release: ENVIRONMENT_NAME
+      },
+      annotations: {
+        'kubernetes.io/ingress.class': 'nginx',
+        'nginx.ingress.kubernetes.io/ssl-redirect': 'true',
+        'nginx.ingress.kubernetes.io/proxy-body-size': '10m',
+        'nginx.ingress.kubernetes.io/proxy-read-timeout': '30',
+        'nginx.ingress.kubernetes.io/permanent-redirect': 'https://www.woz.ch/',
+        'cert-manager.io/cluster-issuer': 'letsencrypt-production'
+      }
+    },
+    /*spec: {
+      rules: [
+        {
+          host: domainAPI,
+          http: {
+            paths: [
+              {
+                backend: {
+                  serviceName: appName,
+                  servicePort: appPort
+                },
+                path: '/'
+              }
+            ]
+          }
+        }
+      ],
+      tls: [
+        {
+          hosts: [domainAPI],
+          secretName: `${appName}-tls-new`
+        }
+      ]
+    }*/
+  }
+  await applyConfig(`ingress-${app}`, ingress)
 }
 
 async function applyConfig(name, obj) {
