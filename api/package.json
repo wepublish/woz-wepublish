@@ -16,6 +16,7 @@
     "clean": "shx rm -rf ./dist"
   },
   "dependencies": {
+    "@sentry/node": "^5.26.0",
     "@wepublish/api": "^0.8.5",
     "@wepublish/api-db-mongodb": "^0.8.5",
     "@wepublish/api-media-karma": "^0.8.5",

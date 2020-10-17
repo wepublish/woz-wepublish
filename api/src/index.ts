@@ -10,7 +10,16 @@ import {
 import {KarmaMediaAdapter} from '@wepublish/api-media-karma'
 import {MongoDBAdapter} from '@wepublish/api-db-mongodb'
 
+import * as Sentry from '@sentry/node';
 import {URL} from 'url'
+
+if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.ENVIRONMENT_NAME) {
+    Sentry.init({
+        dsn: process.env.SENTRY_DSN,
+        release: process.env.RELEASE_VERSION,
+        environment: process.env.ENVIRONMENT_NAME
+    });
+}
 
 class WozURLAdapter implements URLAdapter {
     getPublicArticleURL(article: PublicArticle): string {
@@ -91,6 +100,10 @@ async function asyncMain() {
 }
 
 asyncMain().catch(err => {
-    console.error(err)
-    process.exit(1)
+    Sentry.captureException(err)
+    console.warn('Error during startup', err)
+}).finally(() => {
+    setTimeout(() => {
+        process.exit(0)
+    }, 1000)
 })

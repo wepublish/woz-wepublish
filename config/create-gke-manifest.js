@@ -106,6 +106,14 @@ async function applyMediaServer() {
                       key: 'media_server_token'
                     }
                   }
+                },
+                {
+                  name: 'RELEASE_VERSION',
+                  value: GITHUB_SHA
+                },
+                {
+                  name: 'RELEASE_ENVIRONMENT',
+                  value: ENVIRONMENT_NAME
                 }
               ],
               ports: [
@@ -306,6 +314,14 @@ async function applyApiServer() {
                 {
                   name: 'MONGO_LOCALE',
                   value: 'de'
+                },
+                {
+                  name: 'RELEASE_VERSION',
+                  value: GITHUB_SHA
+                },
+                {
+                  name: 'RELEASE_ENVIRONMENT',
+                  value: ENVIRONMENT_NAME
                 }
               ],
               ports: [
@@ -467,6 +483,14 @@ async function applyApiServer() {
                     {
                       name: 'MONGO_LOCALE',
                       value: 'de'
+                    },
+                    {
+                      name: 'RELEASE_VERSION',
+                      value: GITHUB_SHA
+                    },
+                    {
+                      name: 'RELEASE_ENVIRONMENT',
+                      value: ENVIRONMENT_NAME
                     }
                   ]
                 }
@@ -535,6 +559,14 @@ async function applyEditor() {
                 {
                   name: 'PORT',
                   value: '3006'
+                },
+                {
+                  name: 'RELEASE_VERSION',
+                  value: GITHUB_SHA
+                },
+                {
+                  name: 'RELEASE_ENVIRONMENT',
+                  value: ENVIRONMENT_NAME
                 }
               ],
               ports: [
@@ -789,6 +821,14 @@ async function applyWebsite() {
                 {
                   name: 'NODE_ENV',
                   value: `production`
+                },
+                {
+                  name: 'RELEASE_VERSION',
+                  value: GITHUB_SHA
+                },
+                {
+                  name: 'RELEASE_ENVIRONMENT',
+                  value: ENVIRONMENT_NAME
                 }
               ],
               ports: [

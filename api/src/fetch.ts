@@ -3,8 +3,17 @@ import axios from 'axios'
 import {KarmaMediaAdapter} from "@wepublish/api-media-karma/lib";
 import {URL} from "url";
 import {ArrayBufferUpload, ArticleInput} from "@wepublish/api";
+import * as Sentry from "@sentry/node";
 
-const FETCH_LIMIT = 1
+if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.ENVIRONMENT_NAME) {
+    Sentry.init({
+        dsn: process.env.SENTRY_DSN,
+        release: process.env.RELEASE_VERSION,
+        environment: process.env.ENVIRONMENT_NAME
+    });
+}
+
+const FETCH_LIMIT = 10
 const FETCH_URL = 'https://www.woz.ch/wepub/1.0/articles'
 
 
@@ -116,7 +125,9 @@ async function asyncMain() {
             }
 
         } catch(error) {
-            console.log('Articles Fetch failed', error)
+            if(error.response.status === 404) {
+                Sentry.captureException(error)
+            }
             hasMore = false
         }
     }
@@ -225,9 +236,11 @@ async function asyncMain() {
 }
 
 asyncMain().catch(err => {
-    console.error(err)
-    process.exit(1)
+    Sentry.captureException(err)
+    console.warn('Error during startup', err)
 }).finally(() => {
-    process.exit(0)
+    setTimeout(() => {
+        process.exit(0)
+    }, 1000)
 })
 
