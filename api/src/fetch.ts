@@ -11,6 +11,8 @@ if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.ENVIRON
         release: process.env.RELEASE_VERSION,
         environment: process.env.ENVIRONMENT_NAME
     });
+} else {
+    console.warn('Could not init Sentry')
 }
 
 const FETCH_LIMIT = 10
@@ -241,6 +243,6 @@ asyncMain().catch(err => {
 }).finally(() => {
     setTimeout(() => {
         process.exit(0)
-    }, 1000)
+    }, 5000)
 })
 
