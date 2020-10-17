@@ -13,11 +13,11 @@ import {MongoDBAdapter} from '@wepublish/api-db-mongodb'
 import * as Sentry from '@sentry/node';
 import {URL} from 'url'
 
-if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.ENVIRONMENT_NAME) {
+if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.RELEASE_ENVIRONMENT) {
     Sentry.init({
         dsn: process.env.SENTRY_DSN,
         release: process.env.RELEASE_VERSION,
-        environment: process.env.ENVIRONMENT_NAME
+        environment: process.env.RELEASE_ENVIRONMENT
     });
 } else {
     console.warn('Could not init Sentry')
