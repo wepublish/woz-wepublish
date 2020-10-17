@@ -108,6 +108,15 @@ async function applyMediaServer() {
                   }
                 },
                 {
+                  name: 'SENTRY_DSN',
+                  valueFrom: {
+                    secretKeyRef: {
+                      name: 'wepublish-woz-secrets',
+                      key: 'sentry_dsn'
+                    }
+                  }
+                },
+                {
                   name: 'RELEASE_VERSION',
                   value: GITHUB_SHA
                 },
@@ -316,6 +325,15 @@ async function applyApiServer() {
                   value: 'de'
                 },
                 {
+                  name: 'SENTRY_DSN',
+                  valueFrom: {
+                    secretKeyRef: {
+                      name: 'wepublish-woz-secrets',
+                      key: 'sentry_dsn'
+                    }
+                  }
+                },
+                {
                   name: 'RELEASE_VERSION',
                   value: GITHUB_SHA
                 },
@@ -485,6 +503,15 @@ async function applyApiServer() {
                       value: 'de'
                     },
                     {
+                      name: 'SENTRY_DSN',
+                      valueFrom: {
+                        secretKeyRef: {
+                          name: 'wepublish-woz-secrets',
+                          key: 'sentry_dsn'
+                        }
+                      }
+                    },
+                    {
                       name: 'RELEASE_VERSION',
                       value: GITHUB_SHA
                     },
@@ -559,6 +586,15 @@ async function applyEditor() {
                 {
                   name: 'PORT',
                   value: '3006'
+                },
+                {
+                  name: 'SENTRY_DSN',
+                  valueFrom: {
+                    secretKeyRef: {
+                      name: 'wepublish-woz-secrets',
+                      key: 'sentry_dsn'
+                    }
+                  }
                 },
                 {
                   name: 'RELEASE_VERSION',
@@ -821,6 +857,15 @@ async function applyWebsite() {
                 {
                   name: 'NODE_ENV',
                   value: `production`
+                },
+                {
+                  name: 'SENTRY_DSN',
+                  valueFrom: {
+                    secretKeyRef: {
+                      name: 'wepublish-woz-secrets',
+                      key: 'sentry_dsn'
+                    }
+                  }
                 },
                 {
                   name: 'RELEASE_VERSION',
