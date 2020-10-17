@@ -15,6 +15,9 @@ services:
       - MONGO_URL=mongodb://mongo:27017/woz-wepublish
       - MEDIA_SERVER_URL=http://media:3004
       - MEDIA_SERVER_TOKEN=UnglaublichGheim
+      - RELEASE_VERSION=0
+      - ENVIRONMENT_NAME=dev
+      - SENTRY_DSN=https://18beaf27252a4bf4bf81721134174a89@o462715.ingest.sentry.io/5466510
 
   media:
     container_name: media

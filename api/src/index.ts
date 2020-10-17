@@ -102,7 +102,6 @@ async function asyncMain() {
 asyncMain().catch(err => {
     Sentry.captureException(err)
     console.warn('Error during startup', err)
-}).finally(() => {
     setTimeout(() => {
         process.exit(0)
     }, 1000)
