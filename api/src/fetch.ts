@@ -3,7 +3,7 @@ import axios from 'axios'
 import {KarmaMediaAdapter} from "@wepublish/api-media-karma/lib";
 import {URL} from "url";
 import {ArrayBufferUpload, ArticleInput} from "@wepublish/api";
-import * as Sentry from "@sentry/node";
+import * as Sentry from "@sentry/node"
 
 if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.RELEASE_ENVIRONMENT) {
     Sentry.init({

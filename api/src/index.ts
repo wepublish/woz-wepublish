@@ -10,7 +10,7 @@ import {
 import {KarmaMediaAdapter} from '@wepublish/api-media-karma'
 import {MongoDBAdapter} from '@wepublish/api-db-mongodb'
 
-import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node'
 import {URL} from 'url'
 
 if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.RELEASE_ENVIRONMENT) {

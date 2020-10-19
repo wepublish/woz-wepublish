@@ -4,6 +4,17 @@ import cluster from 'cluster'
 import startMediaServer from '@karma.run/media'
 import LocalStorageBackend from '@karma.run/media-storage-local'
 import SharpImageBackend from '@karma.run/media-image-sharp'
+import * as Sentry from "@sentry/node"
+
+if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.RELEASE_ENVIRONMENT) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    release: process.env.RELEASE_VERSION,
+    environment: process.env.RELEASE_ENVIRONMENT
+  });
+} else {
+  console.warn('Could not init Sentry')
+}
 
 if (cluster.isMaster) {
   const numClusters = process.env.NUM_CLUSTERS
@@ -39,7 +50,9 @@ if (cluster.isMaster) {
     logger: true,
     port,
     address,
-    debug: true,
+    debug,
     token
+  }).catch(err => {
+    Sentry.captureException(err)
   })
 }
