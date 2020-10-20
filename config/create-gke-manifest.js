@@ -518,6 +518,10 @@ async function applyApiServer() {
                     {
                       name: 'RELEASE_ENVIRONMENT',
                       value: ENVIRONMENT_NAME
+                    },
+                    {
+                      name: 'FORCE_UPDATE',
+                      value: 'true'
                     }
                   ]
                 }

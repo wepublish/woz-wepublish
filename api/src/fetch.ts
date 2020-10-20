@@ -67,16 +67,11 @@ export interface WozArticle {
     permalink: string
 }
 
-const asyncFilter = async (arr: [], predicate: any) => {
-    const results = await Promise.all(arr.map(predicate));
-
-    return arr.filter((_v, index) => results[index]);
-}
-
 async function asyncMain() {
 
     if (!process.env.MONGO_URL) throw new Error('No MONGO_URL defined in environment.')
     if (!process.env.HOST_URL) throw new Error('No HOST_URL defined in environment.')
+    const FORCE_UPDATE = process.env.FORCE_UPDATE == 'true'
 
     if (!process.env.MEDIA_SERVER_URL) {
         throw new Error('No MEDIA_SERVER_URL defined in environment.')
@@ -116,7 +111,7 @@ async function asyncMain() {
                     const existingArticle = await dbAdapter.db.collection('articles').findOne({'published.properties.key': 'wozID', 'published.properties.value': wozTeaser.id})
                     return {
                         ...wozTeaser,
-                        update: existingArticle === null || new Date(wozTeaser.updatedAt) > new Date(existingArticle.modifiedAt),
+                        update: existingArticle === null || new Date(wozTeaser.updatedAt) > new Date(existingArticle.modifiedAt) || FORCE_UPDATE,
                         updateID: existingArticle === null ? '' : existingArticle._id
                     }
                 }))
