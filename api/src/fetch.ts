@@ -2,7 +2,7 @@ import {MongoDBAdapter} from "@wepublish/api-db-mongodb";
 import axios from 'axios'
 import {KarmaMediaAdapter} from "@wepublish/api-media-karma/lib";
 import {URL} from "url";
-import {ArrayBufferUpload, ArticleInput} from "@wepublish/api";
+import {ArrayBufferUpload, ArticleInput, DBAdapter, MediaAdapter} from "@wepublish/api";
 import * as Sentry from "@sentry/node"
 
 if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.RELEASE_ENVIRONMENT) {
@@ -65,6 +65,40 @@ export interface WozArticle {
     imageID: string
     imageRecord: WozImage
     permalink: string
+}
+
+async function saveImagetoMediaServer(title: string, imageRecord: WozImage, mediaAdapter: MediaAdapter, dbAdapter: DBAdapter): Promise<string> {
+    const result = await axios.get(imageRecord.url, {
+        responseType: 'arraybuffer'
+    })
+
+    const arrayBufferPromise = new Promise<ArrayBufferUpload>((resolve, rejects) => {
+        resolve({
+            arrayBuffer: result.data,
+            filename: imageRecord.id,
+            mimetype: imageRecord.mimeType
+        })
+    })
+
+    const {id, ...image} = await mediaAdapter.uploadImageFromArrayBuffer(arrayBufferPromise)
+
+    const wepImage = await dbAdapter.image.createImage({
+        id,
+        input: {
+            ...image,
+
+            filename: image.filename,
+            title,
+            description: '',
+            tags: []
+        }
+    })
+
+    if(!wepImage) {
+        throw new Error('wepImage is null or undefined')
+    }
+
+    return wepImage.id
 }
 
 async function asyncMain() {
@@ -166,37 +200,25 @@ async function asyncMain() {
             }
 
             if(wozArticle?.imageRecord) {
-
-                const result = await axios.get(wozArticle.imageRecord.url, {
-                    responseType: 'arraybuffer'
-                })
-
-                const arrayBufferPromise = new Promise<ArrayBufferUpload>((resolve, rejects) => {
-                    resolve({
-                        arrayBuffer: result.data,
-                        filename: wozArticle.imageRecord.id,
-                        mimetype: wozArticle.imageRecord.mimeType
-                    })
-                })
-
-                const {id, ...image} = await mediaAdapter.uploadImageFromArrayBuffer(arrayBufferPromise)
-
-                const wepImage = await dbAdapter.image.createImage({
-                    id,
-                    input: {
-                        ...image,
-
-                        filename: image.filename,
-                        title: `${wozArticle.title} - Mood Image`,
-                        description: '',
-                        tags: []
-                    }
-                })
-                if(!wepImage) {
-                    throw new Error('wepImage is null or undefined')
-                }
-                wozArticle.imageID = wepImage.id
+                const wepID = await saveImagetoMediaServer(`${wozArticle.title} - Mood Image`, wozArticle.imageRecord, mediaAdapter, dbAdapter)
+                wozArticle.imageID = wepID
             }
+
+            wozArticle.blocks = await Promise.all(wozArticle.blocks.map(async (block) => {
+                switch(block.type) {
+                    case 'image':
+                        const wepID = await saveImagetoMediaServer(`${wozArticle.title} - Mood Image`, block.imageRecord, mediaAdapter, dbAdapter)
+                        return {
+                            type: block.type,
+                            caption: block.caption,
+                            imageID: wepID,
+                        }
+                    default:
+                        return block
+
+                }
+            }))
+
             const input : ArticleInput = {
                 title: wozArticle.title,
                 slug: wozArticle.slug,
