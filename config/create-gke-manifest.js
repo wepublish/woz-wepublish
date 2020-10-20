@@ -521,7 +521,7 @@ async function applyApiServer() {
                     },
                     {
                       name: 'FORCE_UPDATE',
-                      value: 'true'
+                      value: 'false'
                     }
                   ]
                 }
