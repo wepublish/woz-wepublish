@@ -207,15 +207,24 @@ async function asyncMain() {
             wozArticle.blocks = await Promise.all(wozArticle.blocks.map(async (block) => {
                 switch(block.type) {
                     case 'image':
-                        const wepID = await saveImagetoMediaServer(`${wozArticle.title} - Mood Image`, block.imageRecord, mediaAdapter, dbAdapter)
+                        const wepID = await saveImagetoMediaServer(`${wozArticle.title} - image`, block.imageRecord, mediaAdapter, dbAdapter)
                         return {
                             type: block.type,
                             caption: block.caption,
                             imageID: wepID,
                         }
+                    case 'imageGallery':
+                        return {
+                            type: block.type,
+                            images: await Promise.all(block.images.map(async (image: any, index: number) => {
+                                return {
+                                    imageID: await saveImagetoMediaServer(`${wozArticle.title} - imageGallery`, block.imageRecords[index],mediaAdapter, dbAdapter),
+                                    caption: image.caption
+                                }
+                            }))
+                        }
                     default:
                         return block
-
                 }
             }))
 
