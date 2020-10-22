@@ -156,7 +156,7 @@ async function asyncMain() {
             }
 
         } catch(error) {
-            if(error.response.status !== 404) {
+            if(error.response === undefined || error.response.status !== 404) {
                 Sentry.captureException(error)
             }
             hasMore = false
