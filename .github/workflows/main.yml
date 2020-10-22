@@ -64,3 +64,13 @@ jobs:
           gcloud --quiet container clusters get-credentials tsri-django
       - name: Deploy
         run: kubectl apply -f ./kubernetesConfigs
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_CHANNEL: dev
+          SLACK_COLOR: '#3278BD'
+          SLACK_ICON: https://github.com/wepublish.png?size=48
+          SLACK_MESSAGE: 'Deploy to Kubernetes done!'
+          SLACK_TITLE: 'Deploy'
+          SLACK_USERNAME: 'Github (woz-wepublish)'
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
