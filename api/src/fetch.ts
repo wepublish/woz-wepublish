@@ -194,14 +194,15 @@ async function asyncMain() {
                         })
                         console.log(`Created author: ${createdAuthor.name}`)
                         authorIDs.push(createdAuthor.id)
+                    } else {
+                        authorIDs.push(results[0].id)
                     }
                 }
                 wozArticle.authorIDs = authorIDs
             }
 
             if(wozArticle?.imageRecord) {
-                const wepID = await saveImagetoMediaServer(`${wozArticle.title} - Mood Image`, wozArticle.imageRecord, mediaAdapter, dbAdapter)
-                wozArticle.imageID = wepID
+                wozArticle.imageID = await saveImagetoMediaServer(`${wozArticle.title} - Mood Image`, wozArticle.imageRecord, mediaAdapter, dbAdapter)
             }
 
             wozArticle.blocks = await Promise.all(wozArticle.blocks.map(async (block) => {
