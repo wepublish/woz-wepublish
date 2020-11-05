@@ -50,6 +50,25 @@ async function applyMediaServer() {
   const appName = `${app}-${ENVIRONMENT_NAME}`
   const appPort = 3004
 
+  const pvc = {
+    apiVersion: 'v1',
+    kind: 'PersistentVolumeClaim',
+    metadata: {
+      name: 'wp-woz-media-production',
+      namespace: NAMESPACE
+    },
+    spec: {
+      accessModes: ["ReadWriteOnce"],
+      resources: {
+        requests: {
+          storage: "30Gi"
+        }
+      }
+    }
+  }
+
+  await applyConfig(`pvc-${app}`, pvc)
+
   const deployment = {
     apiVersion: 'apps/v1',
     kind: 'Deployment',
@@ -158,9 +177,8 @@ async function applyMediaServer() {
           volumes: [
             {
               name: 'media-volume',
-              gcePersistentDisk: {
-                fsType: 'ext4',
-                pdName: 'wepublish-woz-media-production',
+              persistentVolumeClaim: {
+                claimName: 'wp-woz-media-production'
               }
             }
           ]
@@ -712,6 +730,25 @@ async function applyMongo() {
   const port = 27017
   const appName = `${app}-${ENVIRONMENT_NAME}`
 
+  const pvc = {
+    apiVersion: 'v1',
+    kind: 'PersistentVolumeClaim',
+    metadata: {
+      name: 'wp-woz-mongo-production',
+      namespace: NAMESPACE
+    },
+    spec: {
+      accessModes: ["ReadWriteOnce"],
+      resources: {
+        requests: {
+          storage: "30Gi"
+        }
+      }
+    }
+  }
+
+  await applyConfig(`pvc-${app}`, pvc)
+
   const deployment = {
     apiVersion: 'apps/v1',
     kind: 'Deployment',
@@ -778,9 +815,8 @@ async function applyMongo() {
           volumes: [
             {
               name: 'mongo-volume',
-              gcePersistentDisk: {
-                fsType: 'ext4',
-                pdName: 'wepublish-woz-mongo-production'
+              persistentVolumeClaim: {
+                claimName: 'wp-woz-mongo-production'
               }
             }
           ]
