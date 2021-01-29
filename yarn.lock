@@ -835,10 +835,10 @@
     form-data "^3.0.0"
     node-fetch "^2.6.0"
 
-"@wepublish/api@^1.0.0-alpha.0":
-  version "1.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@wepublish/api/-/api-1.0.0-alpha.0.tgz#d64df1ba0d7714b86e10e6cedfe66ed23d6e4ee1"
-  integrity sha512-0MTQKhuw4GC0nBCrv5nwLHP8a/eKO8GxiSAUkDq1U1M2GVgSzFHHO7DjX+JlHo01bwPkSUZ9GUjOWV1SdNwdTg==
+"@wepublish/api@^1.0.0-alpha.1":
+  version "1.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@wepublish/api/-/api-1.0.0-alpha.1.tgz#e03deee8171010a3e812d99a557537baa25433f7"
+  integrity sha512-cjIRJ4wYhjt0fp+cTLJj8Xnu3ucSGX/0WrVCCRPThnXBv+etz4vOM0N/Bg6EZD8vAEmuoyD6agBxfybpc761VA==
   dependencies:
     "@karma.run/utility" "^0.1.0"
     abort-controller "^3.0.0"
