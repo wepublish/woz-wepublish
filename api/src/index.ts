@@ -80,8 +80,7 @@ async function asyncMain() {
         locale: process.env.MONGO_LOCALE ?? 'en'
     })
 
-    const prettyStream = pinoMultiStream.prettyStream()
-    const streams: pinoMultiStream.Streams = [{stream: prettyStream}]
+    const streams: pinoMultiStream.Streams = []
 
     if (process.env.GOOGLE_PROJECT && process.env.GOOGLE_APPLICATION_CREDENTIALS) {
         streams.push({
