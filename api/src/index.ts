@@ -10,18 +10,10 @@ import {
 import {KarmaMediaAdapter} from '@wepublish/api-media-karma'
 import {MongoDBAdapter} from '@wepublish/api-db-mongodb'
 
-import * as Sentry from '@sentry/node'
+import pinoMultiStream from 'pino-multi-stream'
+import pinoStackdriver from 'pino-stackdriver'
+import {createWriteStream} from 'pino-sentry'
 import {URL} from 'url'
-
-if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.RELEASE_ENVIRONMENT) {
-    Sentry.init({
-        dsn: process.env.SENTRY_DSN,
-        release: process.env.RELEASE_VERSION,
-        environment: process.env.RELEASE_ENVIRONMENT
-    });
-} else {
-    console.warn('Could not init Sentry')
-}
 
 class WozURLAdapter implements URLAdapter {
     getPublicArticleURL(article: PublicArticle): string {
@@ -73,7 +65,9 @@ async function asyncMain() {
                 input: {
                     email: 'dev@wepublish.ch',
                     name: 'Dev User',
-                    roleIDs: [adminUserRoleId]
+                    roleIDs: [adminUserRoleId],
+                    properties: [],
+                    active: true
                 },
                 password: '123'
             })
@@ -86,11 +80,42 @@ async function asyncMain() {
         locale: process.env.MONGO_LOCALE ?? 'en'
     })
 
+    const prettyStream = pinoMultiStream.prettyStream()
+    const streams: pinoMultiStream.Streams = [{stream: prettyStream}]
+
+    if (process.env.GOOGLE_PROJECT && process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+        streams.push({
+            level: 'info',
+            stream: pinoStackdriver.createWriteStream({
+                projectId: process.env.GOOGLE_PROJECT,
+                logName: 'wepublish_woz_api'
+            })
+        })
+    }
+
+    if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.RELEASE_ENVIRONMENT) {
+        streams.push({
+            level: 'error',
+            stream: createWriteStream({
+                dsn: process.env.SENTRY_DSN,
+                release: process.env.RELEASE_VERSION,
+                environment: process.env.RELEASE_ENVIRONMENT,
+            })
+        })
+    }
+
+    const logger = pinoMultiStream({
+        streams,
+        level: 'debug'
+    })
+
     const server = new WepublishServer({
+        paymentProviders: [],
         hostURL,
         websiteURL,
         mediaAdapter,
         dbAdapter,
+        logger,
         oauth2Providers: [],
         urlAdapter: new WozURLAdapter(),
         playground: true,
@@ -102,7 +127,6 @@ async function asyncMain() {
 }
 
 asyncMain().catch(err => {
-    Sentry.captureException(err)
     console.warn('Error during startup', err)
     setTimeout(() => {
         process.exit(0)

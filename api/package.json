@@ -16,14 +16,17 @@
     "clean": "shx rm -rf ./dist"
   },
   "dependencies": {
-    "@sentry/node": "^5.26.0",
-    "@wepublish/api": "^0.8.6",
-    "@wepublish/api-db-mongodb": "^0.8.6",
-    "@wepublish/api-media-karma": "^0.8.6",
-    "axios": "^0.20.0"
+    "@wepublish/api": "^1.0.0-alpha.0",
+    "@wepublish/api-db-mongodb": "^1.0.0-alpha.0",
+    "@wepublish/api-media-karma": "^1.0.0-alpha.0",
+    "axios": "^0.20.0",
+    "pino-multi-stream": "^5.2.0",
+    "pino-sentry": "^0.6.1",
+    "pino-stackdriver": "^2.1.1"
   },
   "devDependencies": {
     "@types/node": "^12.6.8",
+    "@types/pino-multi-stream": "^5.1.0",
     "dotenv": "^8.2.0",
     "nodemon": "^1.19.1",
     "npm-run-all": "^4.1.5",

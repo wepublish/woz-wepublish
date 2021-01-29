@@ -230,6 +230,8 @@ async function asyncMain() {
             }))
 
             const input : ArticleInput = {
+                hideAuthor: false,
+                socialMediaAuthorIDs: [],
                 title: wozArticle.title,
                 slug: wozArticle.slug,
                 shared: true,
