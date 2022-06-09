@@ -46,3 +46,4 @@ jobs:
           project_id: wepublish-dev
           credentials: ${{ secrets.GCP_SA_KEY_WEP_DEV }}
       - name: Deploy to kubernetes
+        run: kubectl apply -f ./kubernetesConfigs
