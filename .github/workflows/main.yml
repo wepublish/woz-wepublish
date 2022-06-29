@@ -16,7 +16,7 @@ jobs:
           node-version: '12.x'
       - name: Build docker
         env:
-          PROJECT_ID: woz-ch
+          PROJECT_ID: wepublish-dev
           GCLOUD_AUTH: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_WOZ }}
         run: |
           yarn install
