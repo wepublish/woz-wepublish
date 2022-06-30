@@ -353,6 +353,10 @@ async function applyMediaServer() {
                                             key: 'media_server_token'
                                         }
                                     }
+                                },
+                                {
+                                    name: 'PORT',
+                                    value: appPort
                                 }
                             ],
                             ports: [
@@ -773,6 +777,10 @@ async function applyEditor() {
                                 {
                                     name: 'PEER_BY_DEFAULT',
                                     value: 'true'
+                                },
+                                {
+                                    name: 'PORT',
+                                    value: appPort
                                 }
                             ],
                             ports: [
