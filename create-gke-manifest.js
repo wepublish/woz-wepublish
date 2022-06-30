@@ -114,7 +114,7 @@ async function applyWebsite() {
     }
 
     let ingress = {
-        apiVersion: 'networking.k8s.io/v1beta1',
+        apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
             name: appName,
@@ -425,7 +425,7 @@ async function applyMediaServer() {
     await applyConfig(`service-${app}`, service)
 
     let ingress = {
-        apiVersion: 'networking.k8s.io/v1beta1',
+        apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
             name: appName,
@@ -450,10 +450,15 @@ async function applyMediaServer() {
                         paths: [
                             {
                                 backend: {
-                                    serviceName: appName,
-                                    servicePort: appPort
+                                    service: {
+                                        name: appName,
+                                        port: {
+                                            number: appPort
+                                        }
+                                    }
                                 },
-                                path: '/'
+                                path: '/',
+                                pathType: 'Prefix'
                             }
                         ]
                     }
@@ -662,7 +667,7 @@ async function applyApiServer() {
     await applyConfig(`service-${app}`, service)
 
     let ingress = {
-        apiVersion: 'networking.k8s.io/v1beta1',
+        apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
             name: appName,
@@ -687,10 +692,15 @@ async function applyApiServer() {
                         paths: [
                             {
                                 backend: {
-                                    serviceName: appName,
-                                    servicePort: appPort
+                                    service: {
+                                        name: appName,
+                                        port: {
+                                            number: appPort
+                                        }
+                                    }
                                 },
-                                path: '/'
+                                path: '/',
+                                pathType: 'Prefix'
                             }
                         ]
                     }
@@ -818,7 +828,7 @@ async function applyEditor() {
     await applyConfig(`service-${app}`, service)
 
     let ingress = {
-        apiVersion: 'networking.k8s.io/v1beta1',
+        apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
             name: appName,
@@ -843,10 +853,15 @@ async function applyEditor() {
                         paths: [
                             {
                                 backend: {
-                                    serviceName: appName,
-                                    servicePort: appPort
+                                    service: {
+                                        name: appName,
+                                        port: {
+                                            number: appPort
+                                        }
+                                    }
                                 },
-                                path: '/'
+                                path: '/',
+                                pathType: 'Prefix'
                             }
                         ]
                     }
@@ -1034,7 +1049,7 @@ async function applyOAuth2() {
     await applyConfig(`service-${app}`, service)
 
     let ingress = {
-        apiVersion: 'networking.k8s.io/v1beta1',
+        apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
             name: appName,
@@ -1059,10 +1074,15 @@ async function applyOAuth2() {
                         paths: [
                             {
                                 backend: {
-                                    serviceName: appName,
-                                    servicePort: appPort
+                                    service: {
+                                        name: appName,
+                                        port: {
+                                            number: appPort
+                                        }
+                                    }
                                 },
-                                path: '/'
+                                path: '/',
+                                pathType: 'Prefix'
                             }
                         ]
                     }
