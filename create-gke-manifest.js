@@ -356,7 +356,7 @@ async function applyMediaServer() {
                                 },
                                 {
                                     name: 'PORT',
-                                    value: appPort
+                                    value: `${appPort}`
                                 }
                             ],
                             ports: [
@@ -780,7 +780,7 @@ async function applyEditor() {
                                 },
                                 {
                                     name: 'PORT',
-                                    value: appPort
+                                    value: `${appPort}`
                                 }
                             ],
                             ports: [
