@@ -34,7 +34,7 @@ jobs:
           node-version: '10.x'
       - name: Create manifest
         env:
-          PROJECT_ID: woz-ch
+          PROJECT_ID: wepublish-dev
         run: |
           node ./create-gke-manifest.js
           ls -al ./kubernetesConfigs
