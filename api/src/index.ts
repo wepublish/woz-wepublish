@@ -4,7 +4,7 @@ import {
     URLAdapter,
     PublicArticle,
     PublicPage,
-    Author
+    Author, Peer, PublicComment, CommentItemType, AlgebraicCaptchaChallenge
 } from '@wepublish/api'
 
 import {KarmaMediaAdapter} from '@wepublish/api-media-karma'
@@ -14,20 +14,54 @@ import pinoMultiStream from 'pino-multi-stream'
 import pinoStackdriver from 'pino-stackdriver'
 import {createWriteStream} from 'pino-sentry'
 import {URL} from 'url'
+import {MetadataProperty} from "@wepublish/api/src/db/common";
+import {PaymentProviderCustomer, UserAddress} from "@wepublish/api/src/db/user";
+import path from "path";
+
+interface WOZURLAdapterProps {
+    websiteURL: string
+}
 
 class WozURLAdapter implements URLAdapter {
+    readonly websiteURL: string
+
+    constructor(props: WOZURLAdapterProps) {
+        this.websiteURL = props.websiteURL
+    }
+
     getPublicArticleURL(article: PublicArticle): string {
-        const wozLink = article.properties.find((property => property.key === 'wozLink'))
-        return wozLink?.value || 'https://www.woz.ch'
+        return `${this.websiteURL}/a/${article.id}/${article.slug}`
+    }
+
+    getPeeredArticleURL(peer: Peer, article: PublicArticle): string {
+        return `${this.websiteURL}/p/${peer.id}/${article.id}`
     }
 
     getPublicPageURL(page: PublicPage): string {
-        // TODO: should never be called
-        return `https://woz.ch`
+        return `${this.websiteURL}/page/${page.id}/${page.slug}`
     }
 
     getAuthorURL(author: Author): string {
-        return `https://woz.ch/archiv/"${author.name}"`
+        return `${this.websiteURL}/author/${author.slug || author.id}`
+    }
+
+    getCommentURL(item: PublicArticle | PublicPage, comment: PublicComment) {
+        if (comment.itemType === CommentItemType.Article) {
+            return `${this.websiteURL}/a/${item.id}/${item.slug}#${comment.id}`
+        }
+        return `${this.websiteURL}/${item.slug}#${comment.id}`
+    }
+
+    getArticlePreviewURL(token: string) {
+        return `${this.websiteURL}/a/preview/${token}`
+    }
+
+    getPagePreviewURL(token: string): string {
+        return `${this.websiteURL}/${token}`
+    }
+
+    getLoginURL(token: string): string {
+        return `${this.websiteURL}/login?jwt=${token}`
     }
 }
 
@@ -67,7 +101,8 @@ async function asyncMain() {
                     name: 'Dev User',
                     roleIDs: [adminUserRoleId],
                     properties: [],
-                    active: true
+                    active: true,
+                    emailVerifiedAt: null,
                 },
                 password: '123'
             })
@@ -107,6 +142,19 @@ async function asyncMain() {
         streams,
         level: 'debug'
     })
+    const challenge = new AlgebraicCaptchaChallenge('changeMe', 600, {
+        width: 200,
+        height: 200,
+        background: '#ffffff',
+        noise: 5,
+        minValue: 1,
+        maxValue: 10,
+        operandAmount: 1,
+        operandTypes: ['+', '-'],
+        mode: 'formula',
+        targetSymbol: '?'
+    })
+
 
     const server = new WepublishServer({
         paymentProviders: [],
@@ -116,10 +164,17 @@ async function asyncMain() {
         dbAdapter,
         logger,
         oauth2Providers: [],
-        urlAdapter: new WozURLAdapter(),
-        playground: true,
+        mailContextOptions: {
+            defaultFromAddress: process.env.DEFAULT_FROM_ADDRESS ?? 'dev@wepublish.ch',
+            defaultReplyToAddress: process.env.DEFAULT_REPLY_TO_ADDRESS ?? 'reply-to@wepublish.ch',
+            mailTemplateMaps: [],
+            mailTemplatesPath: path.resolve('templates', 'emails')
+        },
+        urlAdapter: new WozURLAdapter({websiteURL:"https://woz.ch"}),
+        playground: false,
         introspection: true,
-        tracing: true
+        tracing: true,
+        challenge
     })
 
     await server.listen(port, address)
