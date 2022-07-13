@@ -16,9 +16,9 @@
     "clean": "shx rm -rf ./dist"
   },
   "dependencies": {
-    "@wepublish/api": "^1.0.0-alpha.1",
-    "@wepublish/api-db-mongodb": "^1.0.0-alpha.0",
-    "@wepublish/api-media-karma": "^1.0.0-alpha.0",
+    "@wepublish/api": "^4.0.0",
+    "@wepublish/api-db-mongodb": "^4.0.0",
+    "@wepublish/api-media-karma": "^4.0.0",
     "axios": "^0.20.0",
     "pino-multi-stream": "^5.2.0",
     "pino-sentry": "^0.6.1",
