@@ -115,33 +115,14 @@ async function asyncMain() {
         locale: process.env.MONGO_LOCALE ?? 'en'
     })
 
-    const streams: pinoMultiStream.Streams = []
-
-    if (process.env.GOOGLE_PROJECT && process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-        streams.push({
-            level: 'info',
-            stream: pinoStackdriver.createWriteStream({
-                projectId: process.env.GOOGLE_PROJECT,
-                logName: 'wepublish_woz_api'
-            })
-        })
-    }
-
-    if (process.env.SENTRY_DSN && process.env.RELEASE_VERSION && process.env.RELEASE_ENVIRONMENT) {
-        streams.push({
-            level: 'error',
-            stream: createWriteStream({
-                dsn: process.env.SENTRY_DSN,
-                release: process.env.RELEASE_VERSION,
-                environment: process.env.RELEASE_ENVIRONMENT,
-            })
-        })
-    }
+    const prettyStream = pinoMultiStream.prettyStream()
+    const streams: pinoMultiStream.Streams = [{stream: prettyStream}]
 
     const logger = pinoMultiStream({
         streams,
         level: 'debug'
     })
+
     const challenge = new AlgebraicCaptchaChallenge('changeMe', 600, {
         width: 200,
         height: 200,
