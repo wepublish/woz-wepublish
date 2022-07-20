@@ -21,6 +21,7 @@
     "@wepublish/api-media-karma": "^4.0.0",
     "axios": "^0.20.0",
     "pino-multi-stream": "^5.2.0",
+    "pino-pretty": "^8.1.0",
     "pino-sentry": "^0.6.1",
     "pino-stackdriver": "^2.1.1"
   },
